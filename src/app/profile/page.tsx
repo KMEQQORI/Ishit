@@ -1,8 +1,6 @@
 'use client';
 import React from 'react';
-
 import { useUserStore } from '@/store/user.store';
-import Image from 'next/image';
 
 export default function Profile() {
 	const user = useUserStore(state => state.user);
@@ -24,6 +22,7 @@ export default function Profile() {
 				<p className="text-lg font-bold font-serif">Email</p> :{' '}
 				<p className="text-lg font-bold font-serif">{user?.uid}</p>
 			</div>
+			<img className="w-full h-48 object-cover" src={user?.photoURL} alt="Image de la carte" />
 		</div>
 	);
 }

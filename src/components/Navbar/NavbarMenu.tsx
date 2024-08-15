@@ -4,8 +4,9 @@ import Link from 'next/link';
 import { signOut } from '@firebase/auth';
 import { auth } from '@/lib/firebase';
 import { useUserStore } from '@/store/user.store';
+import { SetterType } from '@/types/functions.type';
 
-export default function NavbarMenu({ setIsMenuOpen }) {
+export default function NavbarMenu({ setIsMenuOpen }: { setIsMenuOpen: SetterType }) {
 	const logoutUser = useUserStore(state => state.logoutUser);
 
 	const handleLogout = async () => {

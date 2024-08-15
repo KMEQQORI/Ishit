@@ -19,11 +19,10 @@ const firebaseConfig = {
 	measurementId: process.env.NEXT_PUBLIC_MEASURMENT_ID
 };
 
-let app: FirebaseApp;
+let app: FirebaseApp | null = null;
 if (!firebaseConfig.apiKey) {
 	throw new Error('Missing Firebase configuration');
 }
-
 if (!app) {
 	app = initializeApp(firebaseConfig);
 }

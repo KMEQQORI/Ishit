@@ -1,11 +1,9 @@
 import { create } from 'zustand';
-import { Product, ProductList } from '@/types/product';
-import { fetchProducts } from '@/api/product.api';
+import { ProductType, ProductList } from '@/types/product.type';
 
 // Définir les types pour le state et les actions
 interface UserState {
-	products: ProductList;
-	addProduct: (product: Product) => Product;
+	products: ProductList | null;
 	updateProducts: (products: ProductList) => void;
 }
 

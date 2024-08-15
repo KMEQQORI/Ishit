@@ -2,6 +2,7 @@ import { useState, FormEvent, ChangeEvent } from 'react';
 import { signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 import { auth, googleProvider } from '@/lib/firebase';
 import { useUserStore } from '@/store/user.store';
+import { UserType } from '@/types/user.type';
 
 export default function Login() {
 	const [email, setEmail] = useState<string>('');
@@ -14,7 +15,7 @@ export default function Login() {
 		try {
 			await signInWithEmailAndPassword(auth, email, password);
 			// Rediriger vers la page d'accueil après connexion
-			logUser(auth.currentUser); // Exemple pour logUser
+			logUser(auth.currentUser as UserType); // Exemple pour logUser
 		} catch (error: any) {
 			setError(error.message);
 		}
@@ -24,7 +25,7 @@ export default function Login() {
 		try {
 			await signInWithPopup(auth, googleProvider);
 			// Rediriger vers la page d'accueil après connexion
-			logUser(auth.currentUser); // Exemple pour logUser
+			logUser(auth.currentUser as UserType); // Exemple pour logUser
 		} catch (error: any) {
 			setError(error.message);
 		}

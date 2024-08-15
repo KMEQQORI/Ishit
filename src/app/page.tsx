@@ -3,10 +3,11 @@ import { BearCounter } from '@/app/bear/BearCounter';
 import { BearControls } from '@/app/bear/BearContols';
 import React, { useEffect, useState } from 'react';
 import { useUserStore } from '@/store/user.store';
-import { onAuthStateChanged, signOut } from '@firebase/auth';
+import { onAuthStateChanged, signOut, User } from '@firebase/auth';
 import { auth } from '@/lib/firebase';
 import Signup from '@/components/authentication/Signup';
 import Login from '@/components/authentication/login';
+import { UserType } from '@/types/user.type';
 
 export default function Home() {
 	const logUser = useUserStore(state => state.logUser);
@@ -22,7 +23,7 @@ export default function Home() {
 	useEffect(() => {
 		const unsubscribe = onAuthStateChanged(auth, currentUser => {
 			if (currentUser) {
-				logUser(currentUser);
+				logUser(currentUser as UserType);
 			} else {
 				logoutUser();
 			}

@@ -13,11 +13,11 @@ export default function Products() {
 	return (
 		<div className="flex flex-col items-center justify-between">
 			{Object.entries(products || {}).map(([id, product]) => (
-				<div key={id} class="max-w-sm w-full bg-white shadow-md rounded-lg overflow-hidden m-4">
-					<img class="w-full h-48 object-cover" src={product.image} alt="Image de la carte" />
-					<div class="p-4">
-						<h2 class="text-xl font-semibold text-gray-800">{product.name}</h2>
-						<p class="mt-2 text-3xl font-bold text-gray-900">{product.calories}</p>
+				<div key={id} className="max-w-sm w-full bg-white shadow-md rounded-lg overflow-hidden m-4">
+					<img className="w-full h-48 object-cover" src={product.image} alt="Image de la carte" />
+					<div className="p-4">
+						<h2 className="text-xl font-semibold text-gray-800">{product.name}</h2>
+						<p className="mt-2 text-3xl font-bold text-gray-900">{product.calories}</p>
 					</div>
 				</div>
 			))}

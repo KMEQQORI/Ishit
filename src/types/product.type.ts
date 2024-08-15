@@ -1,9 +1,9 @@
-export type Product = {
+export type ProductType = {
 	name: string;
 	calories: number;
 	image?: string;
 };
 
 export type ProductList = {
-	[s: string]: Product;
+	[s: string]: ProductType;
 };

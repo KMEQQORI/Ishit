@@ -1,9 +1,10 @@
 import { create } from 'zustand';
+import { UserType } from '@/types/user.type';
 
 // Définir les types pour le state et les actions
 interface UserState {
-	user: unknown;
-	logUser: (user: unknown) => void;
+	user: UserType | null;
+	logUser: (user: UserType | null) => void;
 	logoutUser: () => void;
 }
 
