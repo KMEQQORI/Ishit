@@ -1,20 +1,21 @@
-import { useState } from 'react';
+import { useState, FormEvent, ChangeEvent } from 'react';
 import { signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 import { auth, googleProvider } from '@/lib/firebase';
 import { useUserStore } from '@/store/user.store';
 
 export default function Login() {
-	const [email, setEmail] = useState('');
-	const [password, setPassword] = useState('');
-	const [error, setError] = useState('');
+	const [email, setEmail] = useState<string>('');
+	const [password, setPassword] = useState<string>('');
+	const [error, setError] = useState<string>('');
 	const logUser = useUserStore(state => state.logUser);
 
-	const handleLogin = async e => {
+	const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		try {
 			await signInWithEmailAndPassword(auth, email, password);
 			// Rediriger vers la page d'accueil après connexion
-		} catch (error) {
+			logUser(auth.currentUser); // Exemple pour logUser
+		} catch (error: any) {
 			setError(error.message);
 		}
 	};
@@ -23,9 +24,18 @@ export default function Login() {
 		try {
 			await signInWithPopup(auth, googleProvider);
 			// Rediriger vers la page d'accueil après connexion
-		} catch (error) {
+			logUser(auth.currentUser); // Exemple pour logUser
+		} catch (error: any) {
 			setError(error.message);
 		}
+	};
+
+	const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
+		setEmail(e.target.value);
+	};
+
+	const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
+		setPassword(e.target.value);
 	};
 
 	return (
@@ -41,7 +51,7 @@ export default function Login() {
 						id="email"
 						className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
 						value={email}
-						onChange={e => setEmail(e.target.value)}
+						onChange={handleEmailChange}
 						required
 					/>
 				</div>
@@ -54,7 +64,7 @@ export default function Login() {
 						id="password"
 						className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
 						value={password}
-						onChange={e => setPassword(e.target.value)}
+						onChange={handlePasswordChange}
 						required
 					/>
 				</div>

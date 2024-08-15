@@ -5,8 +5,8 @@ import React, { useEffect, useState } from 'react';
 import { useUserStore } from '@/store/user.store';
 import { onAuthStateChanged, signOut } from '@firebase/auth';
 import { auth } from '@/lib/firebase';
-import Login from '@/app/login/login';
-import Signup from '@/app/login/Signup';
+import Signup from '@/components/Signup';
+import Login from '@/components/login';
 
 export default function Home() {
 	const logUser = useUserStore(state => state.logUser);
@@ -49,7 +49,7 @@ export default function Home() {
 				<div>
 					<Login />
 					<div className="flex  flex-col items-center">
-						<p> vous n'avez pas de compte : </p>
+						<p> {"vous n'avez pas de compte :"}</p>
 						<p onClick={() => setIsSignup(true)}> rejoignez-nous </p>
 					</div>
 				</div>
