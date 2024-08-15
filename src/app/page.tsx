@@ -5,8 +5,8 @@ import React, { useEffect, useState } from 'react';
 import { useUserStore } from '@/store/user.store';
 import { onAuthStateChanged, signOut } from '@firebase/auth';
 import { auth } from '@/lib/firebase';
-import Signup from '@/components/Signup';
-import Login from '@/components/login';
+import Signup from '@/components/authentication/Signup';
+import Login from '@/components/authentication/login';
 
 export default function Home() {
 	const logUser = useUserStore(state => state.logUser);

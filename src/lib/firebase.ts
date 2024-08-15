@@ -1,7 +1,8 @@
 // Import the functions you need from the SDKs you need
-import { initializeApp } from 'firebase/app';
+import { FirebaseApp, initializeApp } from 'firebase/app';
 import { getAnalytics } from 'firebase/analytics';
 import { getAuth, GoogleAuthProvider } from '@firebase/auth';
+import { getDatabase } from '@firebase/database';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -18,7 +19,14 @@ const firebaseConfig = {
 	measurementId: process.env.NEXT_PUBLIC_MEASURMENT_ID
 };
 
-// Initialize Firebase
-export const app = initializeApp(firebaseConfig);
+let app: FirebaseApp;
+if (!firebaseConfig.apiKey) {
+	throw new Error('Missing Firebase configuration');
+}
+
+if (!app) {
+	app = initializeApp(firebaseConfig);
+}
 export const auth = getAuth(app);
 export const googleProvider = new GoogleAuthProvider();
+export const database = getDatabase(app);
