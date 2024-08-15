@@ -54,7 +54,7 @@ export default function Navbar() {
 						</li>
 						<li>
 							<Link href="/home2" onClick={() => setIsMenuOpen(false)} className="hover:underline">
-								
+
 							</Link>
 						</li>
 						<li>
