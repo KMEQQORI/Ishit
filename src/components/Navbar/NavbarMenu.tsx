@@ -5,6 +5,7 @@ import { signOut } from '@firebase/auth';
 import { auth } from '@/lib/firebase';
 import { useUserStore } from '@/store/user.store';
 import { SetterType } from '@/types/functions.type';
+import Image from 'next/image';
 
 export default function NavbarMenu({ setIsMenuOpen }: { setIsMenuOpen: SetterType }) {
 	const logoutUser = useUserStore(state => state.logoutUser);
@@ -26,6 +27,9 @@ export default function NavbarMenu({ setIsMenuOpen }: { setIsMenuOpen: SetterTyp
 					<path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
 				</svg>
 			</button>
+			<div className="w-36 h-36 m-6 flex items-center justify-center">
+				<Image src="/logo.png" alt="Vercel Logo" width={300} height={300} priority />
+			</div>
 			<ul className="text-center space-y-6 text-lg">
 				<li>
 					<Link href="/products" onClick={() => setIsMenuOpen(false)} className="hover:underline">

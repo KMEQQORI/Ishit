@@ -1,15 +1,16 @@
 'use client';
 import { useState } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
 import { signOut } from '@firebase/auth';
 import { auth } from '@/lib/firebase';
 import { useUserStore } from '@/store/user.store';
 import NavbarMenu from '@/components/Navbar/NavbarMenu';
+import Link from 'next/link';
+import Image from 'next/image';
 
 export default function OpenNavbar() {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const logoutUser = useUserStore(state => state.logoutUser);
+	const user = useUserStore(state => state.user);
 
 	const handleLogout = async () => {
 		await signOut(auth);
@@ -18,7 +19,7 @@ export default function OpenNavbar() {
 	return (
 		<div>
 			{/* Navbar */}
-			<nav className="bg-slate-200 p-4 flex justify-between items-center">
+			<nav className="bg-slate-200 p-2 flex justify-between items-center">
 				{/* Menu Button */}
 				<button
 					onClick={() => setIsMenuOpen(true)}
@@ -35,9 +36,19 @@ export default function OpenNavbar() {
 					</svg>
 				</button>
 
+
+
 				{/* User Profile SVG */}
 				<div className="w-16 h-16 flex  items-center justify-center">
-					<Image src="/logo.png" alt="Vercel Logo" width={300} height={300} priority />
+					<Link href="/profile">
+						<img
+							className="rounded-full"
+							src={user?.photoURL || '/logo.png'}
+							alt="Vercel Logo"
+							width={300}
+							height={300}
+						/>
+					</Link>
 				</div>
 			</nav>
 
