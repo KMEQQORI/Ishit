@@ -1,12 +1,31 @@
 'use client';
-import React, { useEffect } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import { useProductStore } from '@/store/product.store';
-import { monitorProducts } from '@/api/product.api';
+import { addProduct, monitorProducts } from '@/api/product.api';
 import WithAuth from '@/components/hoc/withAuth';
 import ProductCard from '@/app/products/ProductCard.component';
 
 function ProductPage() {
 	const products = useProductStore(state => state.products);
+
+	const [name, setName] = useState<string>('');
+	const [calories, setCalories] = useState<string>('');
+	const [image, setImage] = useState<string>('');
+
+	const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
+		setName(e.target.value);
+	};
+	const handleCaloriesChange = (e: ChangeEvent<HTMLInputElement>) => {
+		setCalories(e.target.value);
+	};
+	const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+		setImage(e.target.value);
+	};
+
+	const handleSubmit = async e => {
+		e.preventDefault();
+		await addProduct(name, calories, image);
+	};
 
 	useEffect(() => {
 		monitorProducts();
@@ -15,10 +34,35 @@ function ProductPage() {
 	return (
 		<div className="flex flex-col justify-center">
 			<div className="w-full bg-white rounded-b-md p-3 flex flex-col justify-center items-center">
-				<input type="text" className="w-11/12 border-2 border-gray-700 rounded-md p-2 my-1" placeholder="name" />
-				<input type="text" className="w-11/12 border-2 border-gray-700 rounded-md p-2 my-1" placeholder="name" />
-				<input type="text" className="w-11/12 border-2 border-gray-700 rounded-md p-2 my-1" placeholder="name" />
+				<input
+					type="text"
+					className="w-11/12 border-2 border-gray-700 rounded-md p-2 my-1"
+					placeholder="nom"
+					value={name}
+					onChange={handleNameChange}
+					required
+				/>
+				<input
+					type="text"
+					className="w-11/12 border-2 border-gray-700 rounded-md p-2 my-1"
+					placeholder="nombre de calories"
+					value={calories}
+					onChange={handleCaloriesChange}
+					required
+				/>
+				<input
+					type="text"
+					className="w-11/12 border-2 border-gray-700 rounded-md p-2 my-1"
+					placeholder="url de l'image"
+					value={image}
+					onChange={handleImageChange}
+					required
+				/>
+				<button type="submit" onClick={handleSubmit}>
+					add
+				</button>
 			</div>
+
 			<div className="flex flex-col items-center justify-between">
 				{Object.entries(products || {}).map(([id, product]) => (
 					<ProductCard key={id} id={id} name={product.name} calories={product.calories} image={product.image} />
