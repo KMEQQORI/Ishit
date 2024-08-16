@@ -1,8 +1,9 @@
 'use client';
 import React from 'react';
 import { useUserStore } from '@/store/user.store';
+import withAuth from "@/components/hoc/withAuth";
 
-export default function Profile() {
+function Profile() {
 	const user = useUserStore(state => state.user);
 	return (
 		<div className="flex flex-col justify-between mx-auto mt-20">
@@ -24,3 +25,5 @@ export default function Profile() {
 		</div>
 	);
 }
+
+export default withAuth(Profile);

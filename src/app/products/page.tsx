@@ -2,8 +2,10 @@
 import React, { useEffect } from 'react';
 import { useProductStore } from '@/store/product.store';
 import { monitorProducts } from '@/api/product.api';
+import WithAuth from '@/components/hoc/withAuth';
+import ProductCard from '@/app/products/ProductCard.component';
 
-export default function Products() {
+function ProductPage() {
 	const products = useProductStore(state => state.products);
 
 	useEffect(() => {
@@ -11,16 +13,19 @@ export default function Products() {
 	}, []);
 
 	return (
-		<div className="flex flex-col items-center justify-between">
-			{Object.entries(products || {}).map(([id, product]) => (
-				<div key={id} className="max-w-sm w-full bg-white shadow-md rounded-lg overflow-hidden m-4">
-					<img className="w-full h-48 object-cover" src={product.image} alt="Image de la carte" />
-					<div className="p-4">
-						<h2 className="text-xl font-semibold text-gray-800">{product.name}</h2>
-						<p className="mt-2 text-3xl font-bold text-gray-900">{product.calories}</p>
-					</div>
-				</div>
-			))}
+		<div className="flex flex-col justify-center">
+			<div className="w-full bg-white rounded-b-md p-3 flex flex-col justify-center items-center">
+				<input type="text" className="w-11/12 border-2 border-gray-700 rounded-md p-2 my-1" placeholder="name" />
+				<input type="text" className="w-11/12 border-2 border-gray-700 rounded-md p-2 my-1" placeholder="name" />
+				<input type="text" className="w-11/12 border-2 border-gray-700 rounded-md p-2 my-1" placeholder="name" />
+			</div>
+			<div className="flex flex-col items-center justify-between">
+				{Object.entries(products || {}).map(([id, product]) => (
+					<ProductCard key={id} id={id} name={product.name} calories={product.calories} image={product.image} />
+				))}
+			</div>
 		</div>
 	);
 }
+
+export default WithAuth(ProductPage);
