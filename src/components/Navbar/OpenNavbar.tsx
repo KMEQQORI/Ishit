@@ -6,11 +6,12 @@ import { useUserStore } from '@/store/user.store';
 import NavbarMenu from '@/components/Navbar/NavbarMenu';
 import Link from 'next/link';
 import Image from 'next/image';
+import { UserType } from '@/types/user.type';
 
 export default function OpenNavbar() {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const logoutUser = useUserStore(state => state.logoutUser);
-	const user = useUserStore(state => state.user);
+	const user = useUserStore(state => state.user) as UserType;
 
 	const handleLogout = async () => {
 		await signOut(auth);
@@ -35,8 +36,6 @@ export default function OpenNavbar() {
 						<path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7" />
 					</svg>
 				</button>
-
-
 
 				{/* User Profile SVG */}
 				<div className="w-16 h-16 flex  items-center justify-center">

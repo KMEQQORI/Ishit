@@ -53,7 +53,7 @@ function ProductCard({ id, name, calories, image, isEdit, selectProduct }) {
 			)}
 			<img className="h-24 w-3/12 object-cover rounded-md" src={image} alt="Image de la carte" />
 			<h2 className="w-5/12 text-l font-semibold text-gray-800 p-2">{name}</h2>
-			<CaloriesTag count={calories} />
+			<CaloriesTag count={calories} long={false} />
 		</div>
 	);
 }

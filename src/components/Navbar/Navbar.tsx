@@ -10,7 +10,7 @@ import { useRouter } from 'next/navigation';
 
 export default function Navbar() {
 	const router = useRouter();
-	const user = useUserStore(state => state.user);
+	const user = useUserStore(state => state.user) as UserType;
 	const logUser = useUserStore(state => state.logUser);
 	const logoutUser = useUserStore(state => state.logoutUser);
 

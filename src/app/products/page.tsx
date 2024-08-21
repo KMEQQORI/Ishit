@@ -66,7 +66,7 @@ function ProductPage() {
 				</button>
 			</div>
 
-			<ProductList isEdit />
+			<ProductList isEdit={true} nextStep={() => {}} />
 		</div>
 	);
 }

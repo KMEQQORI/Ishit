@@ -4,7 +4,7 @@ import { UserType } from '@/types/user.type';
 export const LOGGING_IN = 'LOGGING_IN';
 // Définir les types pour le state et les actions
 interface UserState {
-	user: UserType | null;
+	user: UserType | string | null;
 	logUser: (user: UserType | null) => void;
 	logoutUser: () => void;
 }

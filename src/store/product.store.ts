@@ -11,6 +11,7 @@ interface ProductState {
 
 // Créer le store avec les types
 export const useProductStore = create<ProductState>(set => ({
+	selectedProduct: null,
 	products: null,
 	updateProducts: products => set(state => ({ products })),
 	selectProduct: selectedProduct => set(state => ({ selectedProduct }))

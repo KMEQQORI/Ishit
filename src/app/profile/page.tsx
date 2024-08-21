@@ -1,10 +1,11 @@
 'use client';
 import React from 'react';
 import { useUserStore } from '@/store/user.store';
-import withAuth from "@/components/hoc/withAuth";
+import withAuth from '@/components/hoc/withAuth';
+import { UserType } from '@/types/user.type';
 
 function Profile() {
-	const user = useUserStore(state => state.user);
+	const user = useUserStore(state => state.user) as UserType;
 	return (
 		<div className="flex flex-col justify-between mx-auto mt-20">
 			<div className="w-10/12 mx-auto bg-gray-50 p-4 rounded-md">

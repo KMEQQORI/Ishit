@@ -21,11 +21,11 @@ const MultiStepForm = () => {
 	const renderStep = () => {
 		switch (step) {
 			case 1:
-				return <ProductList nextStep={nextStep} />;
+				return <ProductList nextStep={nextStep} isEdit={false} />;
 			case 2:
 				return <WeightCard nextStep={nextStep} />;
 			default:
-				return <ProductList nextStep={nextStep} />;
+				return <ProductList nextStep={nextStep} isEdit={false} />;
 		}
 	};
 

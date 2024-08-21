@@ -1,11 +1,12 @@
 import { useRouter } from 'next/navigation';
 import { useEffect, ComponentType } from 'react';
 import { LOGGING_IN, useUserStore } from '@/store/user.store';
+import { UserType } from '@/types/user.type';
 
 const withAuth = <P extends object>(WrappedComponent: ComponentType<P>) => {
 	const ComponentWithAuth = (props: P) => {
 		const router = useRouter();
-		const user = useUserStore(state => state.user);
+		const user = useUserStore(state => state.user) as string;
 
 		useEffect(() => {
 			if (!user) {

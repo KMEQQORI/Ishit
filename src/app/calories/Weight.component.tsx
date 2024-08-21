@@ -3,7 +3,7 @@ import CaloriesTag from '@/components/comuns/CaloriesTag.component';
 import { useUserStore } from '@/store/user.store';
 import { useProductStore } from '@/store/product.store';
 
-function WeightCard({ id, name, calories, image, isEdit, selectProduct }) {
+function WeightCard({ nextStep }) {
 	const selectedProduct = useProductStore(state => state.selectedProduct);
 
 	return (

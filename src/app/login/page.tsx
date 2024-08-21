@@ -4,10 +4,11 @@ import Signup from '@/components/authentication/Signup';
 import Login from '@/components/authentication/login';
 import { useRouter } from 'next/navigation';
 import { useUserStore } from '@/store/user.store';
+import { UserType } from '@/types/user.type';
 
 export default function LoginPage() {
 	const router = useRouter();
-	const user = useUserStore(state => state.user);
+	const user = useUserStore(state => state.user) as UserType;
 	const [isSignup, setIsSignup] = useState(false);
 
 	useEffect(() => {
