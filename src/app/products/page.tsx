@@ -4,10 +4,9 @@ import { useProductStore } from '@/store/product.store';
 import { addProduct, monitorProducts } from '@/api/product.api';
 import WithAuth from '@/components/hoc/withAuth';
 import ProductCard from '@/app/products/ProductCard.component';
+import ProductList from '@/app/products/ProductList.component';
 
 function ProductPage() {
-	const products = useProductStore(state => state.products);
-
 	const [name, setName] = useState<string>('');
 	const [calories, setCalories] = useState<string>('');
 	const [image, setImage] = useState<string>('');
@@ -58,16 +57,16 @@ function ProductPage() {
 					onChange={handleImageChange}
 					required
 				/>
-				<button type="submit" onClick={handleSubmit}>
+				<button
+					className="w-11/12 border-2 border-green-600 bg-green-600 text-white rounded-md p-2 my-1"
+					type="submit"
+					onClick={handleSubmit}
+				>
 					add
 				</button>
 			</div>
 
-			<div className="flex flex-col items-center justify-between">
-				{Object.entries(products || {}).map(([id, product]) => (
-					<ProductCard key={id} id={id} name={product.name} calories={product.calories} image={product.image} />
-				))}
-			</div>
+			<ProductList isEdit />
 		</div>
 	);
 }

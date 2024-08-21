@@ -20,7 +20,7 @@ export default function RootLayout({
 		<html lang="en">
 			<body>
 				<div className="bg-gray-100">
-					<Toaster />
+					<Toaster position="bottom-right" reverseOrder={false} />
 					<Navbar />
 					{children}
 				</div>

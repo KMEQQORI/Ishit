@@ -1,14 +1,17 @@
 import { create } from 'zustand';
-import { ProductType, ProductList } from '@/types/product.type';
+import { ProductList, ProductType } from '@/types/product.type';
 
 // Définir les types pour le state et les actions
-interface UserState {
+interface ProductState {
+	selectedProduct: ProductType;
 	products: ProductList | null;
 	updateProducts: (products: ProductList) => void;
+	selectProduct: (selectedProduct: ProductType) => void;
 }
 
 // Créer le store avec les types
-export const useProductStore = create<UserState>(set => ({
+export const useProductStore = create<ProductState>(set => ({
 	products: null,
-	updateProducts: products => set(state => ({ products }))
+	updateProducts: products => set(state => ({ products })),
+	selectProduct: selectedProduct => set(state => ({ selectedProduct }))
 }));

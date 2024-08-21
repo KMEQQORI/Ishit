@@ -37,6 +37,11 @@ export default function NavbarMenu({ setIsMenuOpen }: { setIsMenuOpen: SetterTyp
 					</Link>
 				</li>
 				<li>
+					<Link href="/calories" onClick={() => setIsMenuOpen(false)} className="hover:underline">
+						calories
+					</Link>
+				</li>
+				<li>
 					<Link href="/profile" onClick={() => setIsMenuOpen(false)} className="hover:underline">
 						profile
 					</Link>
