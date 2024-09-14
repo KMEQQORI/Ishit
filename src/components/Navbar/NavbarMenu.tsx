@@ -47,8 +47,8 @@ export default function NavbarMenu({ setIsMenuOpen }: { setIsMenuOpen: SetterTyp
 					</Link>
 				</li>
 				<li>
-					<Link href="/bear" onClick={() => setIsMenuOpen(false)} className="hover:underline">
-						bear
+					<Link href="/calculator" onClick={() => setIsMenuOpen(false)} className="hover:underline">
+						calculator
 					</Link>
 				</li>
 

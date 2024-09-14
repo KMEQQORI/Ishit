@@ -5,6 +5,7 @@ import { onAuthStateChanged, signOut } from '@firebase/auth';
 import { auth } from '@/lib/firebase';
 import { UserType } from '@/types/user.type';
 import WithAuth from '@/components/hoc/withAuth';
+import ReactCalculator from 'react-calculator-ts';
 
 function Home() {
 	const logUser = useUserStore(state => state.logUser);
@@ -20,14 +21,9 @@ function Home() {
 		});
 	});
 
-	async function handleLogout() {
-		await signOut(auth);
-		logoutUser();
-	}
-
 	return (
-		<main className="flex  flex-col items-center h-screen justify-between">
-			<div>Welcome home</div>
+		<main className="flex  flex-col items-center h-screen justify-between w-10/12 content-center">
+			<div>home</div>
 		</main>
 	);
 }
