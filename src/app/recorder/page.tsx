@@ -1,97 +1,123 @@
-'use client';
+"use client";
 import React, { useState, useEffect } from "react";
 import { useAudioStore } from "@/store/audio.store";
 import { monitorAudioRecords, uploadAudio, deleteAudio } from "@/api/audio.api";
+import { FaTrashAlt } from "react-icons/fa"; // Import the trash icon
 
 const AudioRecorder: React.FC = () => {
-	const { audios, selectAudio, selectedAudio } = useAudioStore();
-	const [isRecording, setIsRecording] = useState(false);
-	const [recorder, setRecorder] = useState<MediaRecorder | null>(null);
+  const { audios, selectAudio, selectedAudio } = useAudioStore();
+  const [isRecording, setIsRecording] = useState(false);
+  const [recorder, setRecorder] = useState<MediaRecorder | null>(null);
+  const [title, setTitle] = useState<string>("");
 
-	useEffect(() => {
-		monitorAudioRecords();
-	}, []);
+  useEffect(() => {
+    monitorAudioRecords();
+  }, []);
 
-	const startRecording = async () => {
-		try {
-			const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-			const mediaRecorder = new MediaRecorder(stream);
-			const chunks: Blob[] = [];
+  const startRecording = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const mediaRecorder = new MediaRecorder(stream);
+      const chunks: Blob[] = [];
 
-			mediaRecorder.ondataavailable = (event) => {
-				if (event.data.size > 0) {
-					chunks.push(event.data);
-				}
-			};
+      mediaRecorder.ondataavailable = (event) => {
+        if (event.data.size > 0) {
+          chunks.push(event.data);
+        }
+      };
 
-			mediaRecorder.onstop = async () => {
-				const blob = new Blob(chunks, { type: "audio/webm" });
-				await uploadAudio(blob);
-			};
+      mediaRecorder.onstop = async () => {
+        const blob = new Blob(chunks, { type: "audio/webm" });
+        await uploadAudio(blob, title);
+        setTitle("");
+      };
 
-			mediaRecorder.start();
-			setRecorder(mediaRecorder);
-			setIsRecording(true);
-		} catch (error) {
-			console.error("Error starting recording:", error);
-		}
-	};
+      mediaRecorder.start();
+      setRecorder(mediaRecorder);
+      setIsRecording(true);
+    } catch (error) {
+      console.error("Error starting recording:", error);
+    }
+  };
 
-	const stopRecording = () => {
-		if (recorder) {
-			recorder.stop();
-			setIsRecording(false);
-			setRecorder(null);
-		}
-	};
+  const stopRecording = () => {
+    if (recorder) {
+      recorder.stop();
+      setIsRecording(false);
+      setRecorder(null);
+    }
+  };
 
-	return (
-		<div className="p-4">
-			<h1 className="text-2xl font-bold">Audio Recorder</h1>
+  return (
+      <div className="p-6 bg-gray-100 min-h-screen">
+        <h1 className="text-3xl font-bold text-center mb-6">Audio Recorder</h1>
 
-			{/* Recorder Controls */}
-			<div className="my-4">
-				{isRecording ? (
-					<button
-						className="bg-red-500 text-white px-4 py-2 rounded"
-						onClick={stopRecording}
-					>
-						Stop Recording
-					</button>
-				) : (
-					<button
-						className="bg-green-500 text-white px-4 py-2 rounded"
-						onClick={startRecording}
-					>
-						Start Recording
-					</button>
-				)}
-			</div>
+        {/* Title Input */}
+        <div className="mb-4">
+          <label htmlFor="title" className="block text-lg font-medium mb-2">
+            Recording Title:
+          </label>
+          <input
+              type="text"
+              id="title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Enter a title for your recording"
+          />
+        </div>
 
-			{/* Audio List */}
-			{audios && (
-				<ul className="list-disc pl-5">
-					{Object.entries(audios).map(([id, audio]) => (
-						<li key={id} className="my-2">
-							<audio controls src={audio.url}></audio>
-							<p>
-								<strong>Uploaded:</strong>{" "}
-								{new Date(audio.createdAt).toLocaleString()}
-							</p>
-							<button
-								className="text-red-500"
-								onClick={() => deleteAudio(id)}
-							>
-								Delete
-							</button>
-						</li>
-					))}
-				</ul>
-			)}
+        {/* Recorder Controls */}
+        <div className="my-4 text-center">
+          {isRecording ? (
+              <button
+                  className="bg-red-600 text-white px-6 py-3 rounded-full shadow-lg hover:bg-red-700"
+                  onClick={stopRecording}
+              >
+                Stop Recording
+              </button>
+          ) : (
+              <button
+                  className="bg-green-600 text-white px-6 py-3 rounded-full shadow-lg hover:bg-green-700"
+                  onClick={startRecording}
+                  disabled={!title.trim()}
+              >
+                Start Recording
+              </button>
+          )}
+        </div>
 
-			{!audios && <p>No audios available.</p>}
-		</div>
-	);
+        {/* Audio List */}
+        <div className="mt-8">
+          <h2 className="text-2xl font-semibold mb-4">Recorded Audios</h2>
+          {audios ? (
+              <ul className="space-y-4">
+                {Object.entries(audios).map(([id, audio]) => (
+                    <li key={id} className="relative bg-white p-4 rounded shadow">
+                      {/* Delete Icon */}
+                      <button
+                          className="absolute top-0 right-0 text-white  bg-amber-800 hover:bg-amber-900 rounded-full p-1"
+                          onClick={() => deleteAudio(id, audio.fileName)}
+                      >
+                        <FaTrashAlt size={10} />
+                      </button>
+
+                      <p className="font-medium text-lg text-teal-950">
+                        {audio.title || "Untitled"}
+                      </p>
+                      <audio controls src={audio.url} className="w-full mb-2"></audio>
+                      <p className="text-xs text-gray-500">
+                        Uploaded: {new Date(audio.createdAt).toLocaleString()}
+                      </p>
+                    </li>
+                ))}
+              </ul>
+          ) : (
+              <p className="text-gray-500">No audios available.</p>
+          )}
+        </div>
+      </div>
+  );
 };
 
 export default AudioRecorder;

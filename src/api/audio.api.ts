@@ -25,32 +25,37 @@ export function monitorAudioRecords() {
     );
 }
 
-export async function uploadAudio(blob: Blob) {
-    try {
-        const fileName = `audio-${Date.now()}.webm`;
-        const storagePath = storageRef(storage, `audios/${fileName}`);
+export async function uploadAudio(blob: Blob, title: string) {
+  try {
+    const fileName = `audio-${Date.now()}.webm`;
+    const storagePath = storageRef(storage, `audios/${fileName}`);
 
-        // Upload to Firebase Storage
-        const uploadResult = await uploadBytes(storagePath, blob);
-        const downloadURL = await getDownloadURL(uploadResult.ref);
+    // Upload to Firebase Storage
+    const uploadResult = await uploadBytes(storagePath, blob);
+    const downloadURL = await getDownloadURL(uploadResult.ref);
 
-        // Save metadata to Realtime Database
-        const dbRefInstance = dbRef(database, "audios");
-        await push(dbRefInstance, {
-            url: downloadURL,
-            createdAt: Date.now(),
-        });
+    // Save metadata to Realtime Database
+    const dbRefInstance = dbRef(database, "audios");
+    await push(dbRefInstance, {
+      url: downloadURL,
+      fileName: fileName,
+      title: title,
+      createdAt: Date.now(),
+    });
 
-        toast.success("Audio uploaded successfully!");
-    } catch (error) {
-        console.error("Error uploading audio:", error);
-        toast.error("Failed to upload audio.");
-    }
+    toast.success("Audio uploaded successfully!");
+  } catch (error) {
+    console.error("Error uploading audio:", error);
+    toast.error("Failed to upload audio.");
+  }
 }
 
-export async function deleteAudio(id: string, filePath: string) {
+export async function deleteAudio(id: string, fileName) {
     try {
         // Remove from Firebase Storage
+        const filePath = `audios/${fileName}`;
+        console.log("filePath", filePath);
+
         const storagePath = storageRef(storage, filePath);
         await deleteObject(storagePath);
 
