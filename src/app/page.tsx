@@ -5,7 +5,7 @@ import { onAuthStateChanged, signOut } from '@firebase/auth';
 import { auth } from '@/lib/firebase';
 import { UserType } from '@/types/user.type';
 import WithAuth from '@/components/hoc/withAuth';
-import ReactCalculator from 'react-calculator-ts';
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 function Home() {
 	const logUser = useUserStore(state => state.logUser);
