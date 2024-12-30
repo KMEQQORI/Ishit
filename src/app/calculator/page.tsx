@@ -6,6 +6,7 @@ import WithAuth from '@/components/hoc/withAuth';
 function Calculator() {
 	return (
 		<div style={{ padding: '64px' }}>
+			test
 		</div>
 	);
 }

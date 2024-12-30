@@ -1,13 +1,14 @@
-import { onValue, push, ref, set } from "@firebase/database";
-import { database } from "@/lib/firebase";
+import { ref as dbRef, onValue, push, set } from "@firebase/database";
+import { ref as storageRef, uploadBytes, deleteObject, getDownloadURL } from "@firebase/storage";
+import { database, storage } from "@/lib/firebase";
 import { useAudioStore } from "@/store/audio.store";
 import toast from "react-hot-toast";
 
 export function monitorAudioRecords() {
-    const dbRef = ref(database, "audios");
+    const dbRefInstance = dbRef(database, "audios");
     console.log("Monitoring audio records");
     onValue(
-        dbRef,
+        dbRefInstance,
         (snapshot) => {
             const data = snapshot.val();
             if (data) {
@@ -26,11 +27,20 @@ export function monitorAudioRecords() {
 
 export async function uploadAudio(blob: Blob) {
     try {
-        const dbRef = ref(database, "audios");
-        const audioUrl = URL.createObjectURL(blob); // Create a temporary URL
-        const createdAt = Date.now();
+        const fileName = `audio-${Date.now()}.webm`;
+        const storagePath = storageRef(storage, `audios/${fileName}`);
 
-        await push(dbRef, { url: audioUrl, createdAt });
+        // Upload to Firebase Storage
+        const uploadResult = await uploadBytes(storagePath, blob);
+        const downloadURL = await getDownloadURL(uploadResult.ref);
+
+        // Save metadata to Realtime Database
+        const dbRefInstance = dbRef(database, "audios");
+        await push(dbRefInstance, {
+            url: downloadURL,
+            createdAt: Date.now(),
+        });
+
         toast.success("Audio uploaded successfully!");
     } catch (error) {
         console.error("Error uploading audio:", error);
@@ -38,10 +48,16 @@ export async function uploadAudio(blob: Blob) {
     }
 }
 
-export async function deleteAudio(id: string) {
+export async function deleteAudio(id: string, filePath: string) {
     try {
-        const dbRef = ref(database, `audios/${id}`);
-        await set(dbRef, null);
+        // Remove from Firebase Storage
+        const storagePath = storageRef(storage, filePath);
+        await deleteObject(storagePath);
+
+        // Remove from Realtime Database
+        const dbRefInstance = dbRef(database, `audios/${id}`);
+        await set(dbRefInstance, null);
+
         toast.success("Audio deleted successfully.");
     } catch (error) {
         console.error("Error deleting audio:", error);
