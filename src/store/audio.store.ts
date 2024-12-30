@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { UserType } from "@/types/user.type";
 
 // Définir les types pour l'état et les actions
 interface AudioRecord {
@@ -7,6 +8,7 @@ interface AudioRecord {
   url: string; // URL de l'enregistrement
   createdAt: number; // Horodatage,
   fileName: string;
+  user: UserType;
 }
 
 interface AudioState {

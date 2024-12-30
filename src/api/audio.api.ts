@@ -8,6 +8,7 @@ import {
 import { database, storage } from "@/lib/firebase";
 import { useAudioStore } from "@/store/audio.store";
 import toast from "react-hot-toast";
+import { UserType } from "@/types/user.type";
 
 export function monitorAudioRecords() {
   const dbRefInstance = dbRef(database, "audios");
@@ -30,7 +31,7 @@ export function monitorAudioRecords() {
   );
 }
 
-export async function uploadAudio(blob: Blob, title: string) {
+export async function uploadAudio(blob: Blob, title: string, user: UserType) {
   try {
     toast.loading("uploading ...");
     const fileName = `audio-${Date.now()}.webm`;
@@ -40,12 +41,18 @@ export async function uploadAudio(blob: Blob, title: string) {
     const uploadResult = await uploadBytes(storagePath, blob);
     const downloadURL = await getDownloadURL(uploadResult.ref);
 
+    console.log({ user });
+
     // Save metadata to Realtime Database
     const dbRefInstance = dbRef(database, "audios");
     await push(dbRefInstance, {
       url: downloadURL,
       fileName: fileName,
       title: title,
+      user: {
+        displayName: user.displayName,
+        photoURL: user.photoURL
+      },
       createdAt: Date.now(),
     });
     toast.dismiss();
