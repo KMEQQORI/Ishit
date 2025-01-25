@@ -1,36 +1,39 @@
-'use client';
-import { useState } from 'react';
-import Link from 'next/link';
-import { signOut } from '@firebase/auth';
-import { auth } from '@/lib/firebase';
-import { useUserStore } from '@/store/user.store';
-import { SetterType } from '@/types/functions.type';
-import Image from 'next/image';
-
+"use client";
+import { useState } from "react";
+import Link from "next/link";
+import { signOut } from "@firebase/auth";
+import { auth } from "@/lib/firebase";
+import { useUserStore } from "@/store/user.store";
+import { SetterType } from "@/types/functions.type";
+import Image from "next/image";
 
 const routes = [
-	{
-		name: 'products',
-		href: '/products',
-	},
-	{
-		name: 'calories',
-		href: '/calories',
-	},
-	{
-		name: 'recorder',
-		href: '/recorder',
-	},
-]
+  {
+    name: "products",
+    href: "/products",
+  },
+  {
+    name: "calories",
+    href: "/calories",
+  },
+  {
+    name: "recorder",
+    href: "/recorder",
+  },
+];
 
-export default function NavbarMenu({ setIsMenuOpen }: { setIsMenuOpen: SetterType }) {
-	const logoutUser = useUserStore(state => state.logoutUser);
+export default function NavbarMenu({
+  setIsMenuOpen,
+}: {
+  setIsMenuOpen: SetterType;
+}) {
+  const logoutUser = useUserStore((state) => state.logoutUser);
 
-	const handleLogout = async () => {
-		await signOut(auth);
-		logoutUser();
-	};
-	return (
+  const handleLogout = async () => {
+    await signOut(auth);
+    logoutUser();
+  };
+  return (
     <div className="fixed inset-0 bg-gray-900 flex flex-col justify-center items-center text-white z-50">
       <button
         onClick={() => setIsMenuOpen(false)}
@@ -68,7 +71,7 @@ export default function NavbarMenu({ setIsMenuOpen }: { setIsMenuOpen: SetterTyp
               onClick={() => setIsMenuOpen(false)}
               className="hover:underline"
             >
-                {route.name}
+              {route.name}
             </Link>
           </li>
         ))}
